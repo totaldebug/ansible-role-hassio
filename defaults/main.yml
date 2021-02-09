@@ -1,0 +1,12 @@
+---
+
+hassio_user: "hassio"
+hassio_group: "hassio"
+hassio_version: latest
+hassio_share: "/usr/share/hassio"
+hassio_config: "/etc/hassio.json"
+hassio_bin: "/usr/sbin/hassio-supervisor"
+supervisor: "homeassistant/amd64-hassio-supervisor"
+machine: "qemux86-64"
+docker_bin: "/usr/bin/docker"
+docker_driver: "overlay2"

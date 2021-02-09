@@ -1,0 +1,37 @@
+---
+
+- name: Pulling Docker image
+  docker_image:
+    name: "{{ supervisor }}:{{ hassio_version }}"
+    source: pull
+  changed_when: false
+
+- name: Install AppArmor scripts
+  ansible.builtin.template:
+    src: hassio-apparmor.j2
+    dest: /usr/sbin/hassio-apparmor
+    mode: '0755'
+
+- name: Copy hassio supervisor
+  ansible.builtin.template:
+    src: hassio-supervisor.j2
+    dest: /usr/sbin/hassio-supervisor
+    mode: '0755'
+
+- name: Copy HASSIO Service
+  ansible.builtin.template:
+    src: hassio-supervisor.service.j2
+    dest: /etc/systemd/system/hassio-supervisor.service
+  notify: Restart hassio-supervisor
+
+- name: Install AppArmor Service
+  ansible.builtin.template:
+    src: hassio-apparmor.service.j2
+    dest: /etc/systemd/system/hassio-apparmor.service
+  notify: Restart hassio-apparmor
+
+- name: Install the 'ha' cli
+  ansible.builtin.copy:
+    src: ha
+    dest: /usr/sbin/ha
+    mode: '0755'

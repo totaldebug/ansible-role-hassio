@@ -1,0 +1,14 @@
+[Unit]
+Description=Hass.io AppArmor
+Wants=hassio-supervisor.service
+Before={{ docker_bin }} hassio-supervisor.service
+
+[Service]
+User={{ hassio_user }}
+Group={{ hassio_group }}
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/sbin/hassio-apparmor
+
+[Install]
+WantedBy=multi-user.target

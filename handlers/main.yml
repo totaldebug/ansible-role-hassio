@@ -1,0 +1,25 @@
+---
+
+- name: Restart docker
+  ansible.builtin.service:
+    name: docker
+    state: restarted
+    enabled: true
+
+- name: Restart networkmanager
+  ansible.builtin.service:
+    name: NetworkManager
+    state: restarted
+    enabled: true
+
+- name: Restart hassio-apparmor
+  ansible.builtin.service:
+    name: hassio-apparmor
+    state: restarted
+    enabled: true
+
+- name: Restart hassio-supervisor
+  ansible.builtin.service:
+    name: hassio-supervisor
+    state: restarted
+    enabled: true

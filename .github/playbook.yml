@@ -1,0 +1,11 @@
+---
+- name: Install Hassio
+  hosts: localhost
+  become: true
+  gather_facts: false
+  vars:
+    - supervisor_share: "/usr/share/hassio"
+    - privileged_mode: false
+    - version: latest
+  tasks:
+    - import_tasks: ../tasks/main.yml

@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  author: Steven Marks
+  role_name: hassio
+  description: "Hass.io server installation"
+  company: "Total Debug"
+  license: "license (BSD, MIT)"
+  min_ansible_version: 2.9
+  platforms:
+    - name: Debian
+      versions:
+        - buster
+  galaxy_tags:
+    - hassio
+    - hass
+    - homeassistant
+    - automation
+dependencies: []
