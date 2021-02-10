@@ -50,8 +50,6 @@ ansible-galaxy install totaldebug.hassio
 
 ### Role Variables
 
-#### Deluge
-
 | **Input** | **Default** | **Description** |
 |:---------:|:-----------:|:---------------:|
 | `hassio_user` | `hassio` | Default user for running hassio |
