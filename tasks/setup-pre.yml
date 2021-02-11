@@ -27,13 +27,25 @@
   ansible.builtin.template:
     src: docker_daemon.json.j2
     dest: /etc/docker/daemon.json
-  notify: Restart docker
+  register: docker_conf
+
+- name: restart docker service
+  service:
+    name: docker
+    state: restarted
+  when: docker_conf.changed
 
 - name: Copy network manager config
   ansible.builtin.copy:
     src: NetworkManager.conf
     dest: /etc/NetworkManager/NetworkManager.conf
-  notify: Restart networkmanager
+  register: NetworkManager_conf
+
+- name: restart NetworkManager service
+  service:
+    name: NetworkManager
+    state: restarted
+  when: NetworkManager_conf.changed
 
 - name: Create config Dir
   ansible.builtin.file:
