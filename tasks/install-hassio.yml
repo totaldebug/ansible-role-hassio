@@ -30,6 +30,7 @@
     name: hassio-apparmor
     state: restarted
     daemon_reload: true
+    enabled: yes
   when: AppArmor_conf.changed
 
 - name: Copy HASSIO Service
@@ -44,6 +45,7 @@
     name: hassio-supervisor
     state: restarted
     daemon_reload: true
+    enabled: yes
   when: supervisor_conf.changed
 
 - name: Install the 'ha' cli
