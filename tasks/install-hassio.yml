@@ -25,7 +25,7 @@
   register: app_armor_conf
 
 - name: Flush handlers
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Copy HASSIO Service
   ansible.builtin.template:
@@ -35,7 +35,7 @@
   register: supervisor_conf
 
 - name: Flush handlers
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Install the 'ha' cli
   ansible.builtin.copy:
