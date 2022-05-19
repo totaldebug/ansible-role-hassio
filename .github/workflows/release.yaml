@@ -1,45 +1,13 @@
 ---
-name: CI
+name: release
 
 on:
-  workflow_dispatch:
   push:
     tags:
-      - 'v*'
-  pull_request:
-    branches:
-      - master
-  schedule:
-    - cron: '0 4 * * 0'
+      - "v*"
+  workflow_dispatch:
 
 jobs:
-  yaml_lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Getting your configuration from GitHub
-        uses: actions/checkout@v1
-      - name: Running YAMLlint
-        uses: "docker://pipelinecomponents/yamllint:latest"
-        with:
-          args: yamllint .
-  remark_lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Getting your configuration from GitHub
-        uses: actions/checkout@v1
-      - name: Running Remark lint
-        uses: "docker://pipelinecomponents/remark-lint:latest"
-        continue-on-error: true
-        with:
-          args: "remark --no-stdout --color --frail --use preset-lint-recommended ."
-  ansible_lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Getting your configuration from GitHub
-        uses: actions/checkout@v2
-      - name: Lint Ansible Role
-        # replace "master" with any valid ref
-        uses: ansible/ansible-lint-action@master
   check_role:
     runs-on: ubuntu-latest
     needs: [yaml_lint, remark_lint, ansible_lint]
@@ -62,7 +30,7 @@ jobs:
       - name: Set up Python 3.
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: "3.x"
 
       - name: Install test dependencies.
         run: pip3 install ansible molecule[docker] docker
@@ -70,8 +38,8 @@ jobs:
       - name: Run Molecule tests.
         run: molecule test
         env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
+          PY_COLORS: "1"
+          ANSIBLE_FORCE_COLOR: "1"
           MOLECULE_DISTRO: ${{ matrix.distro }}
           MOLECULE_PLAYBOOK: ${{ matrix.playbook }}
   release:
