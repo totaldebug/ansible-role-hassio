@@ -1,6 +1,6 @@
 ---
 - name: Ensure dependencies are installed.
-  apt:
+  ansible.builtin.apt:
     name:
       - apparmor
       - curl
@@ -11,7 +11,7 @@
     state: present
 
 - name: pip docker
-  pip:
+  ansible.builtin.pip:
     name: docker
 
 - name: "Add {{ hassio_user }} to docker group"
@@ -28,10 +28,11 @@
   ansible.builtin.template:
     src: docker_daemon.json.j2
     dest: /etc/docker/daemon.json
+    mode: '0755'
   register: docker_conf
 
 - name: restart docker service
-  service:
+  ansible.builtin.service:
     name: docker
     state: restarted
   when: docker_conf.changed
@@ -43,7 +44,7 @@
   register: NetworkManager_conf
 
 - name: restart NetworkManager service
-  service:
+  ansible.builtin.service:
     name: NetworkManager
     state: restarted
   when: NetworkManager_conf.changed
