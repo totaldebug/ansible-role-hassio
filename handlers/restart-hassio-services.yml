@@ -1,0 +1,16 @@
+---
+- name: restart hassio-supervisor service
+  ansible.builtin.service:
+    name: hassio-supervisor
+    state: restarted
+    daemon_reload: true
+    enabled: true
+  when: supervisor_conf.changed
+
+- name: restart hassio-apparmor service
+  ansible.builtin.service:
+    name: hassio-apparmor
+    state: restarted
+    daemon_reload: true
+    enabled: true
+  when: app_armor_conf.changed

@@ -1,6 +1,6 @@
 ---
 - name: Ensure dependencies are installed.
-  apt:
+  ansible.builtin.apt:
     name:
       - apparmor
       - curl
@@ -11,7 +11,7 @@
     state: present
 
 - name: pip docker
-  pip:
+  ansible.builtin.pip:
     name: docker
 
 - name: "Add {{ hassio_user }} to docker group"
@@ -28,25 +28,21 @@
   ansible.builtin.template:
     src: docker_daemon.json.j2
     dest: /etc/docker/daemon.json
+    mode: "0755"
   register: docker_conf
 
-- name: restart docker service
-  service:
-    name: docker
-    state: restarted
-  when: docker_conf.changed
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Copy network manager config
   ansible.builtin.copy:
     src: NetworkManager.conf
     dest: /etc/NetworkManager/NetworkManager.conf
-  register: NetworkManager_conf
+    mode: "0755"
+  register: network_manager_conf
 
-- name: restart NetworkManager service
-  service:
-    name: NetworkManager
-    state: restarted
-  when: NetworkManager_conf.changed
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Create config Dir
   ansible.builtin.file:
@@ -54,6 +50,7 @@
     state: directory
     owner: "{{ hassio_user }}"
     group: "{{ hassio_group }}"
+    mode: "0664"
 
 - name: Create apparmor Dir
   ansible.builtin.file:
@@ -61,8 +58,10 @@
     state: directory
     owner: "{{ hassio_user }}"
     group: "{{ hassio_group }}"
+    mode: "0664"
 
 - name: Copy hassio.json
   ansible.builtin.template:
     src: hassio.json.j2
     dest: /etc/hassio.json
+    mode: "0755"

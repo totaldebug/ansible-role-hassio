@@ -2,6 +2,7 @@
 galaxy_info:
   author: Steven Marks
   role_name: hassio
+  namespace: totaldebug
   description: "Hass.io server installation"
   company: "Total Debug"
   license: "license (BSD, MIT)"

@@ -1,5 +1,4 @@
 ---
-
 - name: Pulling Docker image
   docker_image:
     name: "{{ supervisor }}:{{ hassio_version }}"
@@ -10,46 +9,36 @@
   ansible.builtin.template:
     src: hassio-apparmor.j2
     dest: /usr/sbin/hassio-apparmor
-    mode: '0755'
+    mode: "0755"
 
 - name: Copy hassio supervisor
   ansible.builtin.template:
     src: hassio-supervisor.j2
     dest: /usr/sbin/hassio-supervisor
-    mode: '0755'
+    mode: "0755"
 
 - name: Install AppArmor Service
   ansible.builtin.template:
     src: hassio-apparmor.service.j2
     dest: /etc/systemd/system/hassio-apparmor.service
-    mode: '0755'
-  register: AppArmor_conf
+    mode: "0755"
+  register: app_armor_conf
 
-- name: restart hassio-apparmor service
-  service:
-    name: hassio-apparmor
-    state: restarted
-    daemon_reload: true
-    enabled: yes
-  when: AppArmor_conf.changed
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Copy HASSIO Service
   ansible.builtin.template:
     src: hassio-supervisor.service.j2
     dest: /etc/systemd/system/hassio-supervisor.service
-    mode: '0755'
+    mode: "0755"
   register: supervisor_conf
 
-- name: restart hassio-supervisor service
-  service:
-    name: hassio-supervisor
-    state: restarted
-    daemon_reload: true
-    enabled: yes
-  when: supervisor_conf.changed
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Install the 'ha' cli
   ansible.builtin.copy:
     src: ha
     dest: /usr/sbin/ha
-    mode: '0755'
+    mode: "0755"
