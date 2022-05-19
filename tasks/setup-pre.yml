@@ -50,6 +50,7 @@
     state: directory
     owner: "{{ hassio_user }}"
     group: "{{ hassio_group }}"
+    mode: "0664"
 
 - name: Create apparmor Dir
   ansible.builtin.file:
@@ -57,6 +58,7 @@
     state: directory
     owner: "{{ hassio_user }}"
     group: "{{ hassio_group }}"
+    mode: "0664"
 
 - name: Copy hassio.json
   ansible.builtin.template:
