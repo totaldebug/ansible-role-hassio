@@ -76,25 +76,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Build Changelog
-        id: github_release
-        uses: mikepenz/release-changelog-builder-action@main
-        with:
-          configuration: ".github/workflows/configs/configuration.json"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create Release
+      - name: 🛎️ Create release
         id: create_release
-        uses: actions/create-release@latest
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          body: ${{steps.github_release.outputs.changelog}}
-          draft: false
-          prerelease: ${{ contains(github.ref, '-rc') || contains(github.ref, '-b') || contains(github.ref, '-a') }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          generate_release_notes: true
+          prerelease: ${{ contains(needs.tag_version.outputs.tag, '-rc') || contains(needs.tag_version.outputs.tag, '-b') || contains(needs.tag_version.outputs.tag, '-a') }}
+      - name: 🏷️ Update latest tag
+        uses: EndBug/latest-tag@latest
       - name: Update Ansible Galaxy
-        uses: robertdebock/galaxy-action@1.1.0
+        uses: robertdebock/galaxy-action@1.2.0
         with:
           galaxy_api_key: ${{ secrets.GALAXY_API_KEY }}
