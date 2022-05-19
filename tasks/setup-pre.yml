@@ -6,8 +6,8 @@
       - curl
       - jq
       - network-manager
-      - python-docker
-      - python-pip
+      - python3-docker
+      - python3-pip
     state: present
 
 - name: pip docker
